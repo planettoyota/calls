@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Planet Toyota - Customer Calls</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#17191E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Customer Calls">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F3F4F6;--card:#fff;--ink:#17191E;--mut:#6B7079;--line:#E3E5E9;--soft:#EEF0F3;--red:#C8102E;--graphite:#17191E;--graphite-2:#22252C;--silver:#C9CDD3;
+  --ok:#1E7A4C;--okbg:#E3F3EA;--warn:#9A5B06;--warnbg:#FBF0DC;--bad:#B3261E;--badbg:#FBE5E3;--blue:#1D4F91;--bluebg:#E4ECF8;
+  --shadow:0 1px 1px rgba(23,25,30,.04),0 10px 30px -12px rgba(23,25,30,.18);--gut:max(16px,calc(50vw - 560px))}
+@media (prefers-color-scheme:dark){:root{--bg:#0F1114;--card:#181B20;--ink:#F1F2F4;--mut:#9AA0AA;--line:#2A2E35;--soft:#20242A;--graphite:#0B0C0F;--graphite-2:#16181D;
+  --okbg:#14301F;--ok:#5FD08F;--warnbg:#33260F;--warn:#E9B25C;--badbg:#3A1714;--bad:#F08A80;--bluebg:#16243A;--blue:#8DB4EC;--shadow:0 1px 1px rgba(0,0,0,.3),0 14px 34px -14px rgba(0,0,0,.6)}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);overflow-x:hidden}
+body{font:15px/1.45 Manrope,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;font-feature-settings:"tnum" 1;min-height:100dvh}
+h1,h2,h3,h4,p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:inherit}
+.hide{display:none!important}
+:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+/* band */
+.band{position:relative;background:radial-gradient(120% 90% at 85% -10%,rgba(255,255,255,.12),rgba(255,255,255,0) 55%),linear-gradient(180deg,var(--graphite-2),var(--graphite));
+  color:#F4F5F7;padding:calc(18px + env(safe-area-inset-top)) var(--gut) 0}
+.band .row1{display:flex;align-items:center;gap:10px}
+.brand{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:var(--silver);flex:1;min-width:0}
+.brand i{width:22px;height:22px;border-radius:6px;background:var(--red);display:grid;place-items:center;font:800 10px/1 Manrope,sans-serif;color:#fff;font-style:normal}
+.brand span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.iconbtn{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#fff;border-radius:10px;padding:7px 11px;font-size:13px;font-weight:600}
+.queue{display:flex;align-items:flex-end;gap:22px;margin-top:18px;flex-wrap:wrap}
+.queue .big{font-size:52px;font-weight:800;letter-spacing:-.04em;line-height:.95}
+.queue .big small{display:block;font-size:13px;font-weight:500;letter-spacing:0;color:var(--silver);margin-top:8px}
+.queue .split{display:flex;gap:18px;padding-bottom:4px}
+.queue .split div{font-size:13px;color:var(--silver)}
+.queue .split b{display:block;font-size:20px;color:#fff;font-weight:700}
+.tabs{display:flex;gap:4px;margin-top:20px;overflow-x:auto;scrollbar-width:none;position:relative}
+.tabs::-webkit-scrollbar{display:none}
+.tabs::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,var(--red),rgba(200,16,46,.5) 40%,rgba(200,16,46,0))}
+.tabs button{border:0;background:none;color:var(--silver);padding:10px 12px 12px;font-weight:600;font-size:14px;white-space:nowrap;border-bottom:2px solid transparent;position:relative;z-index:1}
+.tabs button.on{color:#fff;border-bottom-color:#fff}
+.tabs button em{font-style:normal;font-size:12px;background:rgba(255,255,255,.12);border-radius:20px;padding:1px 7px;margin-left:6px}
+/* layout */
+.wrap{padding:16px var(--gut) calc(40px + env(safe-area-inset-bottom));display:grid;grid-template-columns:1fr;gap:16px}
+@media (min-width:980px){.wrap.two{grid-template-columns:400px 1fr;align-items:start}.wrap.two #detail{position:sticky;top:12px;max-height:calc(100dvh - 24px);overflow:auto}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+.sec{font-size:13px;font-weight:700;color:var(--mut);margin:18px 4px 8px}
+.sec:first-child{margin-top:2px}
+.list{display:flex;flex-direction:column;gap:8px}
+.item{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow)}
+.item.on{border-color:var(--ink)}
+.item .t{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.item b{font-size:15px;font-weight:700}
+.item .v{font-size:13px;color:var(--mut);margin-top:2px}
+.item .w{font-size:13px;margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chip{display:inline-block;font-size:12px;font-weight:600;border-radius:20px;padding:2px 9px;background:var(--soft);color:var(--mut);white-space:nowrap}
+.chip.ok{background:var(--okbg);color:var(--ok)}.chip.warn{background:var(--warnbg);color:var(--warn)}.chip.bad{background:var(--badbg);color:var(--bad)}.chip.blue{background:var(--bluebg);color:var(--blue)}
+.empty{padding:22px;text-align:center;color:var(--mut);background:var(--card);border:1px dashed var(--line);border-radius:14px}
+.more{width:100%;border:0;background:none;color:var(--mut);font-weight:600;padding:10px}
+/* detail */
+#detail .card{padding:18px}
+#detail .back{display:none}
+@media (max-width:979px){#detail.open{position:fixed;inset:0;z-index:20;background:var(--bg);overflow:auto;padding:calc(10px + env(safe-area-inset-top)) 14px calc(30px + env(safe-area-inset-bottom))}
+  #detail.open .back{display:inline-flex}#detail:not(.open){display:none}}
+.back{border:0;background:none;font-weight:700;padding:6px 0 12px;color:var(--ink);gap:6px;align-items:center}
+.who h2{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.who .v{color:var(--mut);font-size:14px;margin-top:2px}
+.facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px 14px;margin-top:14px;font-size:13px}
+.facts div span{display:block;color:var(--mut);font-size:12px}
+.facts div span.chip{display:inline-block;color:var(--mut);font-size:12px}.facts div span.chip.ok{color:var(--ok)}
+.facts div b{font-weight:600}
+.dial{display:flex;gap:8px;margin-top:16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-weight:700;text-decoration:none;color:var(--ink)}
+.btn.pri{background:var(--graphite);border-color:var(--graphite);color:#fff}
+.btn.call{background:var(--ok);border-color:var(--ok);color:#fff;flex:1}
+.btn.wa{background:#1FA855;border-color:#1FA855;color:#fff}
+.btn.sm{min-height:36px;padding:0 12px;font-size:14px}
+.btn:disabled{opacity:.5}
+@media (prefers-color-scheme:dark){.btn.pri{background:#F1F2F4;border-color:#F1F2F4;color:#0F1114}}
+h3{font-size:16px;font-weight:700;margin:22px 0 10px}
+.calls .opt{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.calls .opt.sel{border-color:var(--ink);background:var(--soft)}
+.form{border:1px solid var(--ink);border-radius:14px;padding:14px;margin-top:4px}
+.form h4{font-size:15px;margin-bottom:10px}
+.outs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.outs label{margin:0}
+.outs input{position:absolute;opacity:0;pointer-events:none}
+.outs span{display:inline-block;border:1px solid var(--line);border-radius:20px;padding:7px 13px;font-size:14px;font-weight:600;cursor:pointer;background:var(--card)}
+.outs input:checked+span{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.outs input:focus-visible+span{outline:2px solid var(--red);outline-offset:2px}
+label.f{display:block;font-size:13px;font-weight:600;color:var(--mut);margin-bottom:12px}
+label.f input,label.f select,label.f textarea{display:block;width:100%;margin-top:5px;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);font-size:15px;color:var(--ink)}
+label.f select{-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23888' stroke-width='2'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:34px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+@media (max-width:520px){.grid2{grid-template-columns:1fr}}
+.hint{font-size:13px;color:var(--mut)}
+.qn{display:flex;gap:10px;align-items:flex-start;margin-bottom:12px}
+.qn>i{flex:none;width:24px;height:24px;border-radius:50%;background:var(--soft);display:grid;place-items:center;font:700 12px/1 Manrope,sans-serif;font-style:normal;margin-top:2px}
+.qn>div{flex:1;min-width:0}
+.qn label.f{margin-bottom:0;color:var(--ink);font-weight:600;font-size:14px}
+.qn .star{color:var(--bad);font-weight:700}
+.pitch{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px}
+.pitch h5{margin:0 0 8px;font-size:14px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.pitch ul{margin:0 0 10px;padding-left:18px;font-size:14px}.pitch li{margin-bottom:4px}
+.script{background:var(--soft);border-left:3px solid var(--red);border-radius:8px;padding:10px 12px;font-size:14px;margin-bottom:14px}
+.qe{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px;background:var(--card)}
+.qe .tools{display:flex;gap:6px;justify-content:flex-end}
+.qe textarea{min-height:58px;resize:vertical}
+.seg{display:flex;gap:6px;margin-bottom:12px}
+.seg button{border:1px solid var(--line);background:var(--card);border-radius:20px;padding:7px 14px;font-weight:700}
+.seg button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.hist div{border-left:2px solid var(--line);padding:2px 0 10px 12px;font-size:14px}
+.hist small{color:var(--mut)}
+.row{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px;font-size:14px}
+.row .act{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.row .act input,.row .act select{flex:1;min-width:140px;padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:var(--bg)}
+details.log summary{cursor:pointer;font-weight:700;margin-top:18px}
+/* report */
+.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow)}
+.kpi span{display:block;font-size:12px;color:var(--mut);font-weight:600}
+.kpi b{display:block;font-size:24px;font-weight:800;letter-spacing:-.02em;margin-top:4px}
+.kpi small{color:var(--mut);font-size:12px}
+table.t{width:100%;border-collapse:collapse;font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+table.t td,table.t th{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left}
+table.t th{font-size:12px;color:var(--mut);font-weight:700}
+table.t td.n,table.t th.n{text-align:right}
+.search{display:flex;gap:8px}
+.search input{flex:1;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-size:16px}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--graphite);color:#fff;padding:11px 16px;border-radius:12px;font-weight:600;font-size:14px;z-index:50;max-width:90vw;box-shadow:var(--shadow)}
+#busy{position:fixed;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--red),transparent);background-size:50% 100%;animation:bz 1s linear infinite;z-index:60}
+@keyframes bz{from{background-position:-50% 0}to{background-position:150% 0}}
+@media (prefers-reduced-motion:reduce){#busy{animation:none;background:var(--red)}}
+#gate{position:fixed;inset:0;z-index:99;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;text-align:center}
+#gate b{font-size:19px}#gate p{color:var(--mut);max-width:320px;margin:8px 0 20px}
+</style>
+</head>
+<body>
+<div id="gate"><b>Checking your login…</b><p>Please wait.</p></div>
+<div id="busy" class="hide"></div>
+<header class="band">
+  <div class="row1"><div class="brand"><i>PT</i><span id="who">Customer Calls</span></div><button class="iconbtn" id="refresh" title="Refresh">Refresh</button><button class="iconbtn" id="portal">Portal</button></div>
+  <div class="queue" id="queue"></div>
+  <nav class="tabs" id="tabs" aria-label="Sections"></nav>
+</header>
+<main class="wrap" id="wrap"><section id="list"></section><section id="detail" aria-live="polite"></section></main>
+<div id="toast" class="hide" role="status"></div>
+<script>
+'use strict';
+const API = 'https://script.google.com/macros/s/AKfycbzXfD9Cc88ABMVRNXUP71AwsPGGTbUgVxCUOuYq7eyvQ6ZwwSjC4J9sd-V8XvT8WRnB8A/exec';   // same Apps Script as New Vehicle Billing
+const PORTAL = 'https://planettoyota.github.io/main/';
+const APP_VERSION = '24 Nov 2026 (6)';
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const fd = s => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(s || ''); return m ? +m[3] + ' ' + MON[+m[2] - 1] + ' ' + m[1] : (s || ''); };
+const fdt = s => { const m = /^(\d{4}-\d{2}-\d{2})[ T](\d{2}):(\d{2})/.exec(s || ''); if (!m) return fd(s); const h = +m[2]; return fd(m[1]) + ', ' + (h % 12 || 12) + ':' + m[3] + (h < 12 ? ' am' : ' pm'); };
+const today = (n = 0) => new Date(Date.now() + 5.5 * 3600e3 + n * 864e5).toISOString().slice(0, 10);
+const nowStamp = () => new Date(Date.now() + 5.5 * 3600e3).toISOString().slice(0, 16).replace('T', ' ');
+const days = (a, b) => Math.round((Date.parse(b) - Date.parse(a)) / 864e5);
+let U = null, DB = {customers: [], calls: [], bookings: [], leads: [], complaints: [], advisors: [], staff: [], cats: {}}, FOUND = null, LASTQ = '', TAB = '', CUR = null, KIND = '';
+
+/* ---------- server ---------- */
+function tok(){ try { return (JSON.parse(localStorage.getItem('pt_portal') || 'null') || {}).token || ''; } catch (e) { return ''; } }
+function jsonp(action, data){
+  return new Promise((res, rej) => {
+    const cb = 'cb' + Date.now() + Math.floor(Math.random() * 1e6), s = document.createElement('script');
+    const done = () => { clearTimeout(t); delete window[cb]; s.remove(); };
+    const t = setTimeout(() => { done(); rej(new Error('The server did not respond. Check the internet and try again.')); }, 45000);
+    window[cb] = r => { done(); if (r && r.ok) res(r); else rej(new Error(r && r.error === 'Unknown action' ? 'The Apps Script is older than this page. Ask the admin to deploy the latest New Vehicle Billing script.' : (r && r.error) || 'Error')); };
+    s.onerror = () => { done(); rej(new Error('No connection to the server. Check the internet and try again.')); };
+    s.src = API + '?action=' + action + '&callback=' + cb + '&n=' + Date.now() + '&payload=' + encodeURIComponent(JSON.stringify(Object.assign({ptk: tok()}, data || {})));
+    document.body.appendChild(s);
+  });
+}
+let busyN = 0;
+async function run(fn){ busyN++; $('busy').classList.remove('hide'); try { return await fn(); } catch (e) { toast(e.message, 6000); } finally { if (!--busyN) $('busy').classList.add('hide'); } }
+let tt; function toast(m, ms = 2600){ const t = $('toast'); t.textContent = m; t.classList.remove('hide'); clearTimeout(tt); tt = setTimeout(() => t.classList.add('hide'), ms); }
+function gate(title, msg, retry){ const g = $('gate'); g.classList.remove('hide'); g.innerHTML = `<b>${esc(title)}</b><p>${esc(msg)}</p>` + (retry ? '<button class="btn pri" onclick="location.reload()">Try again</button><br>' : '') + `<button class="btn" onclick="location.href=PORTAL">Go to Staff Portal</button>`; }
+
+/* ---------- data helpers ---------- */
+const isPsf = () => U.role === 'PSF' || U.role === 'OWNER';     // records calls
+const isSA = () => U.role === 'SA';
+const custs = () => { const m = new Map(); DB.customers.forEach(c => m.set(c.DealID, c)); (FOUND ? FOUND.customers : []).forEach(c => m.set(c.DealID, c)); return m; };
+const pool = k => { const a = (DB[k] || []).slice(), ids = new Set(a.map(x => JSON.stringify(x))); (FOUND ? FOUND[k] || [] : []).forEach(x => { if (!ids.has(JSON.stringify(x))) a.push(x); }); return a; };
+const custOf = id => custs().get(id);
+const veh = c => [c.Variant || c.Model, c.Colour].filter(Boolean).join(' · ');
+const reg = c => c.RegNo || 'Reg. no. pending';
+const openItems = c => (c.items || []).filter(x => x.st === 'due');
+const dueChip = x => { if (x.st === 'booked') return `<span class="chip blue">Booked ${esc(fd(x.due))}</span>`; if (x.st === 'unreachable') return '<span class="chip bad">Not reachable 3 times</span>';
+  if (x.st === 'done') return '<span class="chip ok">Done</span>'; if (x.st === 'later') return `<span class="chip">From ${esc(fd(x.due))}</span>`;
+  if (x.target) { const n = days(today(), x.target), w = x.group === 'Insurance' ? 'Policy ends' : 'Service due', w2 = x.group === 'Insurance' ? 'Policy ended' : 'Service due';
+    return n > 0 ? `<span class="chip warn">${w} in ${n} day${n > 1 ? 's' : ''}</span>` : n === 0 ? `<span class="chip warn">${w} today</span>` : `<span class="chip bad">${w2} ${-n} day${n < -1 ? 's' : ''} ago</span>`; }
+  const late = days(x.due, today()); return late > 0 ? `<span class="chip bad">${late} day${late > 1 ? 's' : ''} late</span>` : '<span class="chip warn">Today</span>'; };
+const GROUP = {PSF: 'After-delivery calls', Service: 'Service reminders', Insurance: 'Insurance renewals'};
+const leadOwner = o => ({PSF: 'PSF desk', EDP: 'EDP desk', BACKEND: 'Billing (insurance) desk'})[o] || o;
+const advOf = h => (DB.advisors || []).find(a => 'Service: ' + a.name === h);
+const canResolve = c => c.Status === 'Open' && (U.role === 'OWNER' || (U.role === 'SM' && c.Handler === 'Sales Manager') || (U.role === 'SA' && c.Handler === 'Service: ' + U.sa) || (U.role === 'PSF' && /^Service: /.test(c.Handler) && !U.saLogins));
+const canClose = c => c.Status === 'Resolved' && isPsf();
+const myLead = l => !l.ClosedAt && (U.role === 'OWNER' || (U.role === 'PSF' && l.Owner === 'PSF'));
+const KIND_NAME = k => /^D/.test(k) ? 'Day ' + k.slice(1) + ' call' : /^S/.test(k) ? 'Service reminder' : 'Insurance renewal';
+
+/* ---------- tabs ---------- */
+function tabsFor(){
+  if (isSA()) return [['book', 'My bookings'], ['comp', 'My complaints']];
+  const t = [['today', 'Calls today'], ['soon', 'Coming up'], ['leads', 'Leads'], ['comp', 'Complaints'], ['book', 'Service bookings'], ['find', 'Find customer']];
+  if (U.role === 'OWNER' || U.role === 'SM') t.push(['report', 'This month']);
+  if (U.role === 'OWNER') t.push(['qs', 'Questions']);
+  return t;
+}
+function counts(){
+  const C = DB.customers, due = C.flatMap(c => openItems(c));
+  const L = DB.leads.filter(l => !l.ClosedAt), M = DB.complaints.filter(c => c.Status !== 'Closed'), Bk = DB.bookings.filter(b => b.Status === 'Booked' && (!isSA() || b.Advisor === U.sa));
+  return {today: due.length, soon: C.flatMap(c => (c.items || []).filter(x => x.st === 'later' && x.due <= today(7))).length, leads: L.length,
+    comp: isSA() ? M.filter(c => c.Handler === 'Service: ' + U.sa).length : M.length, book: Bk.length, due};
+}
+function header(){
+  const n = counts();
+  $('who').textContent = 'Customer Calls · ' + U.name;
+  if (isSA()) {
+    const td = DB.bookings.filter(b => b.Status === 'Booked' && b.Advisor === U.sa && b.Date === today()).length;
+    $('queue').innerHTML = `<div class="big">${td}<small>service bookings today</small></div><div class="split"><div><b>${n.book}</b>booked in all</div><div><b>${n.comp}</b>complaints</div></div>`;
+  } else {
+    const g = k => n.due.filter(x => x.group === k).length;
+    $('queue').innerHTML = `<div class="big">${n.today}<small>calls to make today</small></div><div class="split"><div><b>${g('PSF')}</b>after delivery</div><div><b>${g('Service')}</b>service</div><div><b>${g('Insurance')}</b>insurance</div></div>`;
+  }
+  const T = tabsFor(); if (!T.some(x => x[0] === TAB)) TAB = T[0][0];
+  $('tabs').innerHTML = T.map(([k, t]) => `<button data-tab="${k}" class="${k === TAB ? 'on' : ''}">${t}${n[k] ? `<em>${n[k]}</em>` : ''}</button>`).join('');
+}
+
+/* ---------- lists ---------- */
+function custRow(c, sub, chips){
+  return `<button class="item${CUR === c.DealID ? ' on' : ''}" data-open="${esc(c.DealID)}" data-kind="${esc(sub || '')}"><div class="t"><b>${esc(c.Customer)}</b><span class="hint">${esc(reg(c))}</span></div>
+    <div class="v">${esc(veh(c))}</div><div class="w">${chips}</div></button>`;
+}
+function listHtml(){
+  const C = DB.customers;
+  if (TAB === 'today' || TAB === 'soon') {
+    const rows = [];
+    C.forEach(c => (c.items || []).forEach(x => { if (TAB === 'today' ? x.st === 'due' : (x.st === 'later' && x.due <= today(7))) rows.push({c, x}); }));
+    rows.sort((a, b) => a.x.due < b.x.due ? -1 : a.x.due > b.x.due ? 1 : 0);
+    if (!rows.length) return `<div class="empty">${TAB === 'today' ? 'No calls left for today. The next ones are under Coming up.' : 'Nothing in the next 7 days.'}</div>`;
+    return ['PSF', 'Service', 'Insurance'].map(g => { const r = rows.filter(y => y.x.group === g); return r.length ? `<div class="sec">${GROUP[g]} · ${r.length}</div><div class="list">` +
+      r.map(({c, x}) => custRow(c, x.kind, `<span>${esc(x.label)}</span> ${dueChip(x)}${x.tries ? ` <span class="chip">tried ${x.tries}×</span>` : ''}`)).join('') + '</div>' : ''; }).join('');
+  }
+  if (TAB === 'leads') {
+    const L = DB.leads.filter(l => !l.ClosedAt);
+    if (!L.length) return '<div class="empty">No open leads.</div>';
+    return ['PSF', 'EDP', 'BACKEND'].map(o => { const r = L.filter(l => l.Owner === o); return r.length ? `<div class="sec">${leadOwner(o)} · ${r.length}</div><div class="list">` +
+      r.map(l => { const c = custOf(l.DealID); return c ? custRow(c, '', `<b>${esc(l.Item)}</b> <span class="chip warn">${esc(l.Status)}</span> <span class="hint">since ${esc(fd(l.CreatedAt))}</span>`) : ''; }).join('') + '</div>' : ''; }).join('');
+  }
+  if (TAB === 'comp') {
+    let M = DB.complaints.filter(c => c.Status !== 'Closed'); if (isSA()) M = DB.complaints.filter(c => c.Handler === 'Service: ' + U.sa);
+    if (!M.length) return '<div class="empty">No open complaints.</div>';
+    const now = nowStamp(), grp = [['Open: overdue', c => c.Status === 'Open' && c.DueAt < now], ['Open', c => c.Status === 'Open' && c.DueAt >= now], ['Resolved: call the customer to close', c => c.Status === 'Resolved'], ['Closed (last 7 days)', c => c.Status === 'Closed']];
+    return grp.map(([t, f]) => { const r = M.filter(f); return r.length ? `<div class="sec">${t} · ${r.length}</div><div class="list">` + r.map(m => { const c = custOf(m.DealID); return c ? custRow(c, '', `<b>${esc(m.Category)}</b>${m.Urgency === 'Urgent' ? ' <span class="chip bad">Urgent</span>' : ''} <span class="hint">${esc(m.Handler)} · by ${esc(fdt(m.DueAt))}</span>`) : ''; }).join('') + '</div>' : ''; }).join('');
+  }
+  if (TAB === 'book') {
+    let Bk = DB.bookings.filter(b => b.Status !== 'Rescheduled'); if (isSA()) Bk = Bk.filter(b => b.Advisor === U.sa);
+    const open = Bk.filter(b => b.Status === 'Booked').sort((a, b) => a.Date < b.Date ? -1 : 1), done = Bk.filter(b => b.Status !== 'Booked').sort((a, b) => a.DoneAt < b.DoneAt ? 1 : -1).slice(0, 15);
+    if (!open.length && !done.length) return '<div class="empty">No service bookings.</div>';
+    const row = b => { const c = custOf(b.DealID); if (!c) return ''; const late = b.Status === 'Booked' && b.Date < today();
+      return custRow(c, '', `<b>${esc(fd(b.Date))}</b> <span class="chip ${b.Status === 'Came' ? 'ok' : b.Status === 'Did not come' ? 'bad' : late ? 'warn' : 'blue'}">${b.Status === 'Booked' ? (late ? 'Mark came or not' : b.Date === today() ? 'Today' : 'Booked') : esc(b.Status)}</span> <span class="hint">${esc(b.Advisor)}${/Pick-up/.test(b.Note) ? ' · pick-up' : ''}</span>`); };
+    return (open.length ? `<div class="sec">Booked · ${open.length}</div><div class="list">${open.map(row).join('')}</div>` : '') + (done.length ? `<div class="sec">Marked recently</div><div class="list">${done.map(row).join('')}</div>` : '');
+  }
+  if (TAB === 'find') {
+    return `<div class="search"><input id="q" type="search" placeholder="Name, mobile, reg. no. or chassis" value="${esc(LASTQ)}" enterkeyhint="search" autocomplete="off"><button class="btn pri" data-act="find">Find</button></div>
+      <p class="hint" style="margin:8px 4px 0">For a customer who phones in. Every delivered customer can be found here.</p>` +
+      (FOUND ? (FOUND.customers.length ? `<div class="sec">${FOUND.customers.length}${FOUND.more ? '+' : ''} found</div><div class="list">${FOUND.customers.map(c => custRow(c, '', `<span class="hint">Delivered ${esc(fd(c.Delivered))} · ${esc(c.Mobile)}</span>`)).join('')}</div>` : '<div class="empty" style="margin-top:12px">No delivered customer matches.</div>') : '');
+  }
+  if (TAB === 'report') return reportHtml();
+  if (TAB === 'qs') return qEditHtml();
+  return '';
+}
+
+/* ---------- report ---------- */
+function reportHtml(){
+  const R = DB.report; if (!R) return '<div class="empty">No report.</div>';
+  const g = R.groups, tot = Object.values(g).reduce((a, x) => a + x.calls, 0), reach = Object.values(g).reduce((a, x) => a + x.reached, 0);
+  const avg = k => R.ratings[k][1] ? (R.ratings[k][0] / R.ratings[k][1]).toFixed(1) : '–';
+  const L = R.leads, lt = Object.keys(L).reduce((a, k) => (a.made += L[k].made, a.conv += L[k].converted, a), {made: 0, conv: 0});
+  const kp = (t, v, s) => `<div class="kpi"><span>${t}</span><b>${v}</b>${s ? `<small>${s}</small>` : ''}</div>`;
+  const tbl = (head, rows) => rows.length ? `<table class="t"><tr>${head.map((h, i) => `<th${i ? ' class="n"' : ''}>${h}</th>`).join('')}</tr>${rows.map(r => `<tr>${r.map((v, i) => `<td${i ? ' class="n"' : ''}>${esc(v)}</td>`).join('')}</tr>`).join('')}</table>` : '<div class="empty">Nothing yet this month.</div>';
+  const m = /^(\d{4})-(\d{2})/.exec(R.month);
+  return `<div class="sec">${MON[+m[2] - 1]} ${m[1]}</div><div class="kpis">
+    ${kp('Calls made', tot, reach + ' reached')}${kp('Delivery rating (day 1)', avg('D1'), 'out of 5')}${kp('Satisfaction (day 3)', avg('D3'), R.ratings.low + ' unhappy (1–2)')}
+    ${kp('Service booked', R.books.booked, R.books.came + ' came · ' + R.books.noshow + ' did not')}${kp('Leads', lt.made, lt.conv + ' converted')}
+    ${kp('Complaints', R.comps.logged, R.comps.open + ' open · ' + R.comps.overdue + ' overdue')}</div>
+    <div class="sec">Calls by type</div>${tbl(['Type', 'Calls', 'Reached', 'Not reached'], Object.keys(g).map(k => [GROUP[k] || k, g[k].calls, g[k].reached, g[k].notReached]))}
+    <div class="sec">What happened</div>${tbl(['Result', 'Calls'], Object.keys(R.outcomes).sort().map(k => [k, R.outcomes[k]]))}
+    <div class="sec">Leads</div>${tbl(['Item', 'New', 'Converted', 'Lost', 'Open now'], Object.keys(L).map(k => [k, L[k].made, L[k].converted, L[k].lost, L[k].open]))}
+    <div class="sec">Complaints logged by category</div>${tbl(['Category', 'Logged'], Object.keys(R.comps.byCat).map(k => [k, R.comps.byCat[k]]))}
+    <div class="sec">Conversions by caller (for awards)</div>${tbl(['Caller', 'Leads made', 'Leads sold', 'Sale value (₹)', 'Services booked', 'Came for service', 'Insurance renewed'],
+      Object.keys(R.credit || {}).map(k => { const x = R.credit[k]; return [k, x.leads, x.converted, x.value.toLocaleString('en-IN'), x.booked, x.came, x.renewed]; }))}
+    <div class="sec">What each caller's work brought in</div>${(R.wins || []).length ? `<table class="t"><tr><th>Caller</th><th>Customer</th><th>Item</th><th>Lead / booking</th><th>Sold / came</th><th class="n">Amount</th><th>How we know</th></tr>${R.wins.map(w => `<tr><td>${esc(w.caller)}</td><td>${esc(w.customer)}</td><td>${esc(w.item)}</td><td>${esc(fd(w.made))}</td><td>${esc(fd(w.converted))}</td><td class="n">${w.amount ? '₹' + w.amount.toLocaleString('en-IN') : '–'}</td><td class="hint">${esc(w.how)}</td></tr>`).join('')}</table>` : '<div class="empty">No conversions yet this month.</div>'}
+    <div class="sec">Calls by person</div>${tbl(['Caller', 'Calls'], Object.keys(R.callers).map(k => [k, R.callers[k]]))}`;
+}
+
+/* ---------- PSF questions (owner) ---------- */
+let QCALL = 'D1', QE = null;
+const QTYPE = {note: 'Script line (no answer)', rating: 'Rating 1 to 5', yesno: 'Yes / No', choice: 'Choose from options', staff: 'Who attended (staff list)', text: 'Written answer'};
+function qLoad(){ QE = {}; ['D1', 'D3', 'D30', 'P-EW', 'P-TG', 'P-ACC', 'P-TS'].forEach(k => { QE[k] = (DB.questions || []).filter(x => x.Call === k).map(x => ({QID: x.QID, Question: x.Question, Type: x.Type, Options: x.Options, Required: x.Required, FlagIf: x.FlagIf})); }); }
+function qEditHtml(){
+  if (!QE) qLoad();
+  const L = QE[QCALL], NAME = {D1: 'Day 1 call', D3: 'Day 3 call', D30: 'Day 30 call', 'P-EW': 'EW pitch', 'P-TG': 'T-Gloss pitch', 'P-ACC': 'Accessories pitch', 'P-TS': 'T-Smile pitch'}, isP = /^P-/.test(QCALL);
+  return `<div class="seg" style="flex-wrap:wrap">${['D1', 'D3', 'D30', 'P-EW', 'P-TG', 'P-ACC', 'P-TS'].map(k => `<button data-qc="${k}" class="${k === QCALL ? 'on' : ''}">${NAME[k]} · ${QE[k].length}</button>`).join('')}</div>
+    <p class="hint" style="margin:0 4px 12px">${isP ? 'Pitch lines are shown on the day 3 and day 30 calls only to customers who did not take this item. {ewtill} becomes the last date to buy extended warranty and {ewdays} the days left.' : ''} The PSF desk sees these in this order. In script lines, {caller} becomes the caller's first name and {model} the car. "Tell the owner if the answer is" emails you and the Sales Manager: an option (No, Yes, Poor…), several with /, &lt;=2 for ratings, or "any".</p>
+    ${L.map((x, i) => `<div class="qe" data-i="${i}"><div class="tools"><span class="hint" style="margin-right:auto">${i + 1}</span><button class="btn sm" data-qa="up" ${i ? '' : 'disabled'} aria-label="Move up">↑</button><button class="btn sm" data-qa="down" ${i < L.length - 1 ? '' : 'disabled'} aria-label="Move down">↓</button><button class="btn sm" data-qa="del">Remove</button></div>
+      <label class="f">${x.Type === 'note' ? 'What the caller says' : 'Question'}<textarea data-qf="Question">${esc(x.Question)}</textarea></label>
+      <div class="grid2${isP ? ' hide' : ''}"><label class="f">Answer${sel('', [], null).replace('<select id="">', `<select data-qf="Type">`).replace('</select>', Object.keys(QTYPE).map(t => `<option value="${t}" ${t === x.Type ? 'selected' : ''}>${QTYPE[t]}</option>`).join('') + '</select>')}</label>
+      ${x.Type === 'choice' ? `<label class="f">Options, separated by /<input data-qf="Options" value="${esc(x.Options)}" placeholder="Yes/No/Not taken"></label>` : ''}
+      ${x.Type !== 'note' ? `<label class="f">Tell the owner if the answer is<input data-qf="FlagIf" value="${esc(x.FlagIf)}" placeholder="${x.Type === 'rating' ? '<=2' : x.Type === 'text' ? 'any' : 'No'}"></label>
+      <label class="f" style="display:flex;gap:8px;align-items:center;margin-top:26px"><input type="checkbox" data-qf="Required" style="width:auto;margin:0" ${x.Required === 'Yes' ? 'checked' : ''}> Must be answered</label>` : ''}</div></div>`).join('')}
+    <div class="qe" style="margin-top:18px"><b>Standard lists</b><p class="hint" style="margin:4px 0 10px">Replace all the call questions and pitch scripts with the standard set in one language. Your own changes are replaced too.</p>
+      <button class="btn sm" data-qa="std" data-lang="hi" ${DB.qlang === 'hi' ? 'disabled' : ''}>हिन्दी (Hindi)</button> <button class="btn sm" data-qa="std" data-lang="en" ${DB.qlang === 'en' ? 'disabled' : ''}>English</button>
+      <span class="hint">&nbsp;Now: ${DB.qlang === 'en' ? 'English' : 'Hindi'}</span></div>
+    <div style="display:flex;gap:8px;margin-top:10px">${isP ? '' : '<button class="btn" data-qa="add">+ Add question</button>'}<button class="btn" data-qa="addnote">+ Add ${isP ? 'pitch line' : 'script line'}</button><button class="btn pri" data-qa="save" style="margin-left:auto">Save ${NAME[QCALL]} questions</button></div>`;
+}
+$('list').addEventListener('input', e => { const f = e.target.dataset.qf, r = e.target.closest('.qe'); if (!f || !r) return; QE[QCALL][+r.dataset.i][f] = f === 'Required' ? (e.target.checked ? 'Yes' : '') : e.target.value; });
+$('list').addEventListener('change', e => { if (e.target.dataset.qf === 'Type' || e.target.dataset.qf === 'Required') { const r = e.target.closest('.qe'); QE[QCALL][+r.dataset.i][e.target.dataset.qf] = e.target.dataset.qf === 'Required' ? (e.target.checked ? 'Yes' : '') : e.target.value; if (e.target.dataset.qf === 'Type') render(); } });
+$('list').addEventListener('click', e => {
+  const c = e.target.closest('[data-qc]'); if (c) { QCALL = c.dataset.qc; render(); return; }
+  const b = e.target.closest('[data-qa]'); if (!b) return;
+  const L = QE[QCALL], r = b.closest('.qe'), i = r ? +r.dataset.i : -1, a = b.dataset.qa;
+  if (a === 'up') [L[i - 1], L[i]] = [L[i], L[i - 1]];
+  if (a === 'down') [L[i + 1], L[i]] = [L[i], L[i + 1]];
+  if (a === 'del') { if (!confirm('Remove this question? Answers already given stay in the call history.')) return; L.splice(i, 1); }
+  if (a === 'add') L.push({QID: '', Question: '', Type: 'yesno', Options: '', Required: 'Yes', FlagIf: 'No'});
+  if (a === 'addnote') L.push({QID: '', Question: '', Type: 'note', Options: '', Required: '', FlagIf: ''});
+  if (a === 'std') { const lg = b.dataset.lang; if (!confirm('Replace all PSF questions and pitch scripts with the standard ' + (lg === 'hi' ? 'Hindi' : 'English') + ' set?')) return;
+    return run(async () => { const r2 = await jsonp('ccQuestions', {standard: lg}); DB.questions = r2.questions; DB.qlang = r2.lang; qLoad(); render(); toast(lg === 'hi' ? 'Hindi questions in use' : 'English questions in use'); }); }
+  if (a === 'save') return run(async () => { const r2 = await jsonp('ccQuestions', {call: QCALL, rows: L}); DB.questions = r2.questions; qLoad(); render(); toast('Questions saved. The PSF desk sees them from the next call.'); });
+  render();
+});
+
+/* ---------- customer ---------- */
+const sel = (id, opts, ph) => `<select id="${id}">${ph != null ? `<option value="">${esc(ph)}</option>` : ''}${opts.map(o => `<option>${esc(o)}</option>`).join('')}</select>`;
+const yn = id => sel(id, ['Yes', 'No'], 'Choose');
+const outs = list => `<div class="outs" role="radiogroup">${list.map(o => `<label><input type="radio" name="out" value="${esc(o)}"><span>${esc(o)}</span></label>`).join('')}</div>`;
+// Tailored offer for each item the customer did not take: the pitch script for this customer, then the answer.
+const HI = t => /[\u0900-\u097F]/.test(t || '');   // written in Hindi (Devanagari)?
+const PITCH = {'Extended warranty': 'P-EW', 'T-Gloss': 'P-TG', 'Accessories': 'P-ACC', 'T-Smile': 'P-TS'};
+function fillLine(t, c){
+  const left = c.EwTill ? Math.max(0, days(today(), c.EwTill)) : '';
+  return esc(t).replace(/\{caller\}/g, esc(String(U.name || '').split(' ')[0])).replace(/\{model\}/g, esc(c.Model || 'car')).replace(/\{customer\}/g, esc(c.Customer))
+    .replace(/\{ewtill\}/g, esc(fd(c.EwTill))).replace(/\{ewdays\}/g, String(left));
+}
+function pitchHtml(c, offer){
+  return `<div class="sec" style="margin-left:0">Offer what ${esc(String(c.Customer).split(' ')[0])} did not take</div>` + offer.map((i, n) => {
+    const lines = (DB.questions || []).filter(x => x.Call === PITCH[i]);
+    const left = i === 'Extended warranty' && c.EwTill ? Math.max(0, days(today(), c.EwTill)) : null;
+    return `<div class="pitch"><h5><span>${esc(i)}</span>${left != null ? `<span class="chip ${left <= 10 ? 'bad' : 'warn'}">${left} days left to buy</span>` : ''}</h5>
+      ${lines.length ? `<ul>${lines.map(x => `<li>${fillLine(x.Question, c)}</li>`).join('')}</ul>` : ''}
+      ${(() => { const hi = lines.some(x => HI(x.Question)); return `<label class="f">${hi ? 'ग्राहक का जवाब' : 'Customer\'s answer'}<select id="pfPitch${n}"><option value="">${hi ? 'चुनें' : 'Choose'}</option>${[['Interested', 'रुचि है'], ['Not now', 'अभी नहीं'], ['Not interested', 'रुचि नहीं']].map(([val, lab]) => `<option value="${val}">${hi ? lab : val}</option>`).join('')}</select></label>`; })()}</div>`; }).join('') +
+    `<p class="hint" style="margin-bottom:12px">"Interested" makes a lead in your name. When it is sold, the sale is counted to you.</p>`;
+}
+function callForm(c, x){
+  const k = x.kind, offer = (c.Offer || []).filter(i => !pool('leads').some(l => l.DealID === c.DealID && l.Item === i && !l.ClosedAt));
+  let q = '', o = [], extra = '';
+  const QS = (DB.questions || []).filter(x => x.Call === k);
+  if (/^D/.test(k) && QS.length) {
+    o = ['Spoke', 'Not reachable', 'Call back'];
+    const fill = t => esc(t).replace(/\{caller\}/g, esc(String(U.name || '').split(' ')[0])).replace(/\{model\}/g, esc(c.Model || 'car')).replace(/\{customer\}/g, esc(c.Customer));
+    let n = 0;
+    const s1 = (c.items || []).find(y => y.kind === 'S1');
+    const svcLine = k !== 'D30' || !s1 ? '' : `<div class="script" style="border-left-color:var(--blue)">1st free service: ${s1.st === 'booked' ? 'booked for <b>' + esc(fd(s1.due)) + '</b>' + (s1.book ? ' with ' + esc(s1.book.Advisor) : '') : s1.st === 'done' ? '<b>done</b>' : 'not booked yet. Book it from the "1st free service" call above.'}</div>`;
+    q = svcLine + QS.map(x => {
+      if (x.Type === 'note') return `<div class="script">${fill(x.Question)}</div>`;
+      const hi = HI(x.Question), id = 'q_' + x.QID;   // [value, label]: Yes / No and ratings are stored the same in both languages
+      const opts = x.Type === 'rating' ? [['5', hi ? '5 · बहुत अच्छा' : '5 · excellent'], ['4', '4'], ['3', '3'], ['2', '2'], ['1', hi ? '1 · खराब' : '1 · poor']]
+        : x.Type === 'yesno' ? [['Yes', hi ? 'हाँ' : 'Yes'], ['No', hi ? 'नहीं' : 'No']]
+        : x.Type === 'choice' ? x.Options.split('/').map(t => t.trim()).filter(Boolean).map(t => [t, t])
+        : x.Type === 'staff' ? (DB.staff || []).map(t => [t, t]).concat([['Other', hi ? 'कोई और (नाम लिखें)' : 'Other'], ['Not sure', hi ? 'पता नहीं' : 'Not sure']]) : null;
+      const ctl = opts ? `<select id="${esc(id)}" data-q="${esc(x.QID)}" data-t="${x.Type}"><option value="">${hi ? 'चुनें' : 'Choose'}</option>${opts.map(([val, lab]) => `<option value="${esc(val)}">${esc(lab)}</option>`).join('')}</select>`
+        : `<input id="${esc(id)}" data-q="${esc(x.QID)}" data-t="text" type="text">`;
+      return `<div class="qn"><i>${++n}</i><div><label class="f">${fill(x.Question)}${x.Required === 'Yes' ? ' <span class="star" title="Must be answered">*</span>' : ''}${ctl}</label>${x.Type === 'staff' ? `<label class="f hide" id="${esc(id)}_oL" style="margin-top:8px">${hi ? 'ग्राहक ने जो नाम बताया' : 'Name the customer gave'}<input id="${esc(id)}_o" type="text"></label>` : ''}</div></div>`;
+    }).join('');
+    if (k !== 'D1' && offer.length) q += pitchHtml(c, offer);
+  } else if (/^D/.test(k)) {
+    o = ['Spoke', 'Not reachable', 'Call back'];
+    if (k === 'D1') q = `<div class="grid2"><label class="f">Delivery experience${sel('pfRate', ['5 excellent','4','3','2','1 poor'], 'Choose')}</label>
+      <label class="f">Who attended you at the showroom?${sel('pfWho', (DB.staff || []).concat(['Other', 'Not sure']), 'Choose')}</label></div>
+      <label class="f hide" id="pfWhoL">Name the customer gave<input id="pfWhoName" type="text"></label>
+      <div class="grid2"><label class="f">Features explained (infotainment, app, keys, warranty)?${yn('pfFeat')}</label><label class="f">All items received (invoice, insurance, manual, 2nd key, accessories)?${yn('pfItems')}</label></div>`;
+    if (k === 'D3') q = `<div class="grid2"><label class="f">Any problem with the car so far?${yn('pfProb')}</label><label class="f">Accessories / T-Gloss / EW delivered as promised?${sel('pfProm', ['Yes', 'No', 'Not applicable'], 'Choose')}</label></div>
+      <label class="f">Overall satisfaction${sel('pfRate', ['5 excellent','4','3','2','1 poor'], 'Choose')}</label><p class="hint" style="margin-bottom:12px">Tell the customer Toyota may also call for its own feedback.</p>`;
+    if (k === 'D30') q = `<div class="grid2"><label class="f">First free service${sel('pfSvc', ['Booked', 'Not yet', 'Already done'], 'Choose')}</label><label class="f">RC received?${yn('pfRc')}</label>
+      <label class="f">HSRP plates fitted?${yn('pfHsrp')}</label><label class="f">FASTag working?${yn('pfTag')}</label></div><label class="f">Any issue still open?${yn('pfOpen')}</label>`;
+    if (k !== 'D1' && offer.length) q += pitchHtml(c, offer);
+  } else if (/^S/.test(k)) {
+    o = ['Booked', 'Already done', 'Not needed', 'Not reachable', 'Call back'];
+    extra = `<div data-for="Booked" class="hide"><div class="grid2"><label class="f">Service date<input id="bkDate" type="date" min="${today()}"></label><label class="f">Service advisor${sel('bkAdv', (DB.advisors || []).map(a => a.name), 'Choose')}</label></div><label class="f">Pick-up needed?${sel('bkPick', ['No', 'Yes'])}</label></div>
+      <div data-for="Already done" class="hide"><label class="f">Where?${sel('svWhere', ['Planet Toyota', 'Other workshop'], 'Choose')}</label></div>
+      <div data-for="Not needed" class="hide"><label class="f">Reason${sel('svWhy', ['Vehicle sold', 'Moved to another city', 'Not interested', 'Other'], 'Choose')}</label></div>`;
+  } else {
+    o = ['Renewed with us', 'Renewed elsewhere', 'Interested', 'Not interested', 'Not reachable', 'Call back'];
+    extra = `<div data-for="Renewed with us" class="hide"><label class="f">New policy no.<input id="rnPol" type="text"></label></div>
+      <div data-for="Renewed elsewhere" class="hide"><label class="f">Insurance company<input id="rnIns" type="text"></label></div>
+      <div data-for="Interested" class="hide"><p class="hint" style="margin-bottom:10px">The billing (insurance) desk gets this as a lead and sends the quote.</p><label class="f">Note for the insurance desk<input id="rnNote" type="text" placeholder="e.g. wants zero depreciation"></label></div>
+      <div data-for="Not interested" class="hide"><label class="f">Why?<input id="rnWhy" type="text"></label></div>`;
+  }
+  if (/^D/.test(k)) return `<div class="form" data-kind="${esc(k)}"><h4>${esc(x.label)}</h4>
+    <div id="spokeQ">${q}</div>
+    <div class="sec" style="margin-left:0">How did the call go?</div>${outs(o)}
+    <label class="f hide" id="cbL">Call back on<input id="cbDate" type="date" min="${today()}"></label>
+    <label class="f">Remarks<input id="rem" type="text" placeholder="What the customer said"></label>
+    <button class="btn pri" data-act="saveCall" data-offer="${esc(JSON.stringify(offer))}">Save call</button></div>`;
+  return `<div class="form" data-kind="${esc(k)}"><h4>${esc(x.label)}</h4>${outs(o)}
+    <label class="f hide" id="cbL">Call back on<input id="cbDate" type="date" min="${today()}"></label>
+    <div id="spokeQ">${q ? `<p class="hint" style="margin:0 0 10px">${/^D/.test(k) ? 'Ask these on the call, then choose Spoke and save. If the customer does not pick up, choose Not reachable.' : ''}</p>` + q : ''}</div>${extra}
+    <label class="f">Remarks<input id="rem" type="text" placeholder="What the customer said"></label>
+    <button class="btn pri" data-act="saveCall" data-offer="${esc(JSON.stringify(offer))}">Save call</button></div>`;
+}
+function detailHtml(){
+  const c = CUR && custOf(CUR);
+  if (!c) return window.matchMedia('(min-width:980px)').matches && TAB !== 'report' ? '<div class="empty">Choose a customer from the list.</div>' : '';
+  const items = (c.items || []).filter(x => x.st !== 'done'), calls = pool('calls').filter(x => x.DealID === c.DealID).sort((a, b) => a.At < b.At ? 1 : -1);
+  const leads = pool('leads').filter(l => l.DealID === c.DealID), comps = pool('complaints').filter(m => m.DealID === c.DealID), books = pool('bookings').filter(b => b.DealID === c.DealID && b.Status !== 'Rescheduled').sort((a, b) => a.At < b.At ? 1 : -1);
+  const taken = [['Extended warranty', c.EW], ['Accessories', c.Acc], ['T-Gloss', c.TGloss], ['T-Smile', c.Tsmile]];
+  const wa = 'https://wa.me/91' + String(c.Mobile || '').replace(/\D/g, '').slice(-10);
+  if (!KIND || !items.some(x => x.kind === KIND && x.st === 'due')) KIND = (items.find(x => x.st === 'due') || {}).kind || '';
+  let h = `<button class="back" data-act="back">‹ Back</button><div class="card"><div class="who"><h2>${esc(c.Customer)}</h2><div class="v">${esc(veh(c))} · ${esc(reg(c))}</div></div>
+    <div class="dial"><a class="btn call" href="tel:${esc(c.Mobile)}">Call ${esc(c.Mobile)}</a><a class="btn wa" href="${esc(wa)}" target="_blank" rel="noopener">WhatsApp</a></div>
+    <div class="facts"><div><span>Delivered</span><b>${esc(fd(c.Delivered))}</b></div><div><span>Sales Executive</span><b>${esc(c.SE || '-')}</b>${c.TL ? `<br><small class="hint">TL ${esc(c.TL)}</small>` : ''}</div>
+      <div><span>Insurance</span><b>${esc(c.Insurer || (c.InsBy === 'Customer self' ? 'Customer\'s own' : '-'))}</b>${c.PolicyDate ? `<br><small class="hint">from ${esc(fd(c.PolicyDate))}</small>` : ''}</div>
+      <div><span>Chassis</span><b>${esc(c.Chassis)}</b></div>
+      <div style="grid-column:1/-1"><span>Taken with the car</span>${taken.map(([t, v]) => `<span class="chip ${v ? 'ok' : ''}" style="margin:3px 4px 0 0">${v ? '✓' : '–'} ${t}</span>`).join('')}</div></div>`;
+  // calls
+  if (isSA()) {
+    const mine = books.filter(b => b.Advisor === U.sa);
+    if (mine.length) h += `<h3>Service booking</h3>` + mine.map(b => `<div class="row"><b>${esc(fd(b.Date))}</b> · ${esc(KIND_NAME(b.Kind))} ${(c.items || []).find(x => x.kind === b.Kind) ? '· ' + esc((c.items.find(x => x.kind === b.Kind) || {}).label) : ''}
+      <span class="chip ${b.Status === 'Came' ? 'ok' : b.Status === 'Did not come' ? 'bad' : 'blue'}">${esc(b.Status)}</span>${b.Note ? `<div class="hint">${esc(b.Note)}</div>` : ''}<div class="hint">Booked by ${esc(b.By)}</div>
+      ${b.Status === 'Booked' ? `<div class="act"><input id="bn_${esc(b.BookID)}" type="text" placeholder="Note (optional)"><button class="btn sm pri" data-act="book" data-b="${esc(b.BookID)}" data-s="Came" ${b.Date > today() ? 'disabled title="Not yet the booking date"' : ''}>Came</button><button class="btn sm" data-act="book" data-b="${esc(b.BookID)}" data-s="Did not come">Did not come</button></div>` : ''}</div>`).join('');
+  } else {
+    h += `<h3>Calls</h3>`;
+    if (!items.length) h += '<p class="hint">No call is open for this customer now.</p>';
+    else h += `<div class="calls">${items.map(x => `<div class="opt${x.kind === KIND ? ' sel' : ''}"><div><b>${esc(x.label)}</b>${x.tries ? ` <span class="hint">· tried ${x.tries}×</span>` : ''}</div><div>${dueChip(x)}${isPsf() && x.st === 'due' && x.kind !== KIND ? ` <button class="btn sm" data-act="pick" data-k="${esc(x.kind)}">Open</button>` : ''}</div></div>`).join('')}</div>`;
+    const x = items.find(i => i.kind === KIND);
+    if (x && isPsf()) h += callForm(c, x);
+    const ob = books.filter(b => b.Status === 'Booked');
+    if (ob.length) h += ob.map(b => `<div class="row">Service booked for <b>${esc(fd(b.Date))}</b> with ${esc(b.Advisor)}${b.Note ? ' · ' + esc(b.Note) : ''}
+      ${U.role !== 'SM' ? `<div class="act"><button class="btn sm" data-act="book" data-b="${esc(b.BookID)}" data-s="Came" ${b.Date > today() ? 'disabled' : ''}>Came</button><button class="btn sm" data-act="book" data-b="${esc(b.BookID)}" data-s="Did not come">Did not come</button></div>` : ''}</div>`).join('');
+  }
+  // leads
+  if (leads.length && !isSA()) h += `<h3>Leads</h3>` + leads.map(l => `<div class="row"><b>${esc(l.Item)}</b> · ${esc(leadOwner(l.Owner))} <span class="chip ${l.Result === 'Converted' ? 'ok' : l.ClosedAt ? '' : 'warn'}">${esc(l.Result || l.Status)}</span>${l.Note ? `<div class="hint">${esc(l.Note)}</div>` : ''}
+    ${myLead(l) ? `<div class="act">${sel('ld_' + l.LeadID, ['Following up', 'Converted', 'Not interested'], 'Result')}<input id="ln_${esc(l.LeadID)}" type="text" placeholder="Bill no. or note"><input id="la_${esc(l.LeadID)}" type="number" min="0" placeholder="Amount (₹), when converted"><button class="btn sm pri" data-act="lead" data-l="${esc(l.LeadID)}">Save</button></div>` : ''}</div>`).join('');
+  // complaints
+  const now = nowStamp();
+  const cs = isSA() ? comps.filter(m => m.Handler === 'Service: ' + U.sa) : comps;
+  if (cs.length) h += `<h3>Complaints</h3>` + cs.map(m => { const a = advOf(m.Handler), od = m.Status === 'Open' && m.DueAt < now; let hist = []; try { hist = JSON.parse(m.History || '[]'); } catch (e) {}
+    const waA = a && !isSA() ? `https://wa.me/91${a.mobile}?text=${encodeURIComponent('Customer complaint (' + c.Customer + ', ' + (c.Variant || c.Model) + ', ' + reg(c) + ', mobile ' + c.Mobile + '): ' + m.Text + '. Please resolve by ' + m.DueAt + '.')}` : '';
+    return `<div class="row"><b>${esc(m.Category)}</b>${m.Urgency === 'Urgent' ? ' <span class="chip bad">Urgent</span>' : ''} <span class="chip ${m.Status === 'Closed' ? 'ok' : od ? 'bad' : m.Status === 'Resolved' ? 'warn' : ''}">${od ? 'Overdue' : esc(m.Status)}</span>${m.Escalated === '1' ? ' <span class="chip bad">Escalated</span>' : ''}
+      <div style="margin-top:6px">${esc(m.Text)}</div><div class="hint">${esc(m.Handler)} · resolve by ${esc(fdt(m.DueAt))} · logged by ${esc(m.LoggedBy)}${waA ? ` · <a href="${waA}" target="_blank" rel="noopener">Send to ${esc(a.name)} on WhatsApp</a>` : ''}</div>
+      ${m.Resolution ? `<div class="hint">Done: ${esc(m.Resolution)} (${esc(m.ResolvedBy)})</div>` : ''}
+      <details><summary class="hint">History</summary>${hist.map(y => `<div class="hint">${esc(fdt(y[0]))} · ${esc(y[1])}: ${esc(y[2])}</div>`).join('')}</details>
+      ${canResolve(m) ? `<div class="act"><input id="cr_${esc(m.CompID)}" type="text" placeholder="What was done"><button class="btn sm pri" data-act="resolve" data-c="${esc(m.CompID)}">Mark resolved</button></div>` : ''}
+      ${canClose(m) ? `<div class="act"><input id="cc_${esc(m.CompID)}" type="text" placeholder="What the customer said"><button class="btn sm pri" data-act="close" data-c="${esc(m.CompID)}" data-ok="1">Satisfied: close</button><button class="btn sm" data-act="close" data-c="${esc(m.CompID)}" data-ok="0">Not satisfied: reopen</button></div>` : ''}</div>`; }).join('');
+  if (!isSA()) h += `<details class="log"><summary>Log a complaint</summary><div style="margin-top:12px">
+      <label class="f">Category${sel('cpCat', Object.keys(DB.cats || {}), 'Choose')}</label><label class="f hide" id="cpAdvL">Service advisor${sel('cpAdv', (DB.advisors || []).map(a => a.name), 'Choose')}</label>
+      <label class="f">Urgency${sel('cpUrg', ['Normal (48 hours)', 'Urgent (24 hours)'])}</label><label class="f">Complaint<input id="cpText" type="text" placeholder="What the customer reported"></label>
+      <p class="hint" id="cpTo"></p><button class="btn pri" data-act="complain">Log complaint</button></div></details>`;
+  // history
+  if (calls.length && !isSA()) h += `<h3>Call history</h3><div class="hist">${calls.map(x => { let a = {}; try { a = JSON.parse(x.Answers || '{}'); } catch (e) {}
+    const ans = Object.keys(a).map(k => esc(k) + ': ' + esc(a[k])).join(' · ');
+    return `<div><b>${esc(KIND_NAME(x.Kind))}</b> · ${esc(x.Outcome)}${x.NextDue ? ' (call back ' + esc(fd(x.NextDue)) + ')' : ''}${x.Rating ? ' · <b>' + esc(x.Rating) + '/5</b>' : ''}${x.Attended ? ' · attended by ' + esc(x.Attended) : ''}
+      <br><small>${esc(x.By)}, ${esc(fdt(x.At))}${ans ? ' · ' + ans : ''}${x.Remarks ? ' · “' + esc(x.Remarks) + '”' : ''}</small></div>`; }).join('')}</div>`;
+  return h + '</div>';
+}
+
+/* ---------- render ---------- */
+function render(){
+  header();
+  $('list').innerHTML = listHtml();
+  const d = $('detail'); d.innerHTML = detailHtml();
+  d.classList.toggle('open', !!(CUR && custOf(CUR)));
+  $('wrap').classList.toggle('two', TAB !== 'report' && TAB !== 'qs');
+  $('detail').classList.toggle('hide', TAB === 'report' || TAB === 'qs');
+}
+async function load(){
+  const r = await jsonp('ccList');
+  U = r.user; DB = r;
+  if (FOUND && LASTQ) { try { FOUND = await jsonp('ccFind', {q: LASTQ}); } catch (e) {} }
+  render();
+}
+
+/* ---------- events ---------- */
+$('tabs').onclick = e => { const b = e.target.closest('[data-tab]'); if (!b) return; TAB = b.dataset.tab; CUR = null; render(); window.scrollTo(0, 0); };
+$('refresh').onclick = () => run(load);
+$('portal').onclick = () => { location.href = PORTAL; };
+$('list').onclick = e => {
+  const o = e.target.closest('[data-open]');
+  if (o) { CUR = o.dataset.open; KIND = o.dataset.kind || ''; render(); if (!window.matchMedia('(min-width:980px)').matches) $('detail').scrollTop = 0; return; }
+  if (e.target.closest('[data-act=find]')) doFind();
+};
+$('list').onkeydown = e => { if (e.key === 'Enter' && e.target.id === 'q') doFind(); };
+function doFind(){ const q = ($('q').value || '').trim(); if (q.length < 3) return toast('Type at least 3 letters or digits'); LASTQ = q; run(async () => { FOUND = await jsonp('ccFind', {q}); render(); }); }
+$('detail').onchange = e => {
+  if (e.target.name === 'out') {
+    const v = e.target.value, f = e.target.closest('.form');
+    f.querySelector('#cbL').classList.toggle('hide', v !== 'Call back');
+    f.querySelector('#spokeQ').classList.toggle('hide', v === 'Not reachable' || v === 'Call back');   // the questions show from the start
+    f.querySelectorAll('[data-for]').forEach(x => x.classList.toggle('hide', x.dataset.for !== v));
+  }
+  if (e.target.id === 'pfWho') $('pfWhoL').classList.toggle('hide', e.target.value !== 'Other');
+  if (e.target.dataset && e.target.dataset.t === 'staff') { const L = $(e.target.id + '_oL'); if (L) L.classList.toggle('hide', e.target.value !== 'Other'); }
+  if (e.target.id === 'cpCat') { const to = (DB.cats || {})[e.target.value]; $('cpAdvL').classList.toggle('hide', to !== 'SERVICE');
+    $('cpTo').textContent = to ? 'Goes to: ' + (to === 'SERVICE' ? 'the service advisor you choose' : to === 'SM' ? 'the Sales Manager' : 'the billing desk') + '. The owner is told of every complaint.' : ''; }
+};
+const v = id => (($(id) || {}).value || '').trim();
+$('detail').onclick = e => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const act = b.dataset.act, c = custOf(CUR);
+  if (act === 'back') { CUR = null; render(); return; }
+  if (act === 'pick') { KIND = b.dataset.k; render(); return; }
+  if (act === 'saveCall') {
+    const f = b.closest('.form'), kind = f.dataset.kind, out = (f.querySelector('input[name=out]:checked') || {}).value;
+    if (!out) return toast('Choose what happened on the call');
+    const p = {id: c.DealID, kind, outcome: out, remarks: v('rem')};
+    if (out === 'Call back') { p.next = v('cbDate'); if (!p.next) return toast('Choose the date to call back'); }
+    const QS = (DB.questions || []).filter(x => x.Call === kind);
+    if (/^D/.test(kind) && out === 'Spoke' && QS.length) {
+      p.answers = {};
+      for (const x of QS) {
+        if (x.Type === 'note') continue;
+        let val = v('q_' + x.QID); if (x.Type === 'staff' && val === 'Other') val = v('q_' + x.QID + '_o');
+        if (!val && x.Required === 'Yes') { const el = $('q_' + x.QID); if (el) el.focus(); return toast('Ask: ' + x.Question); }
+        if (val) p.answers[x.QID] = val;
+      }
+      p.pitch = {}; JSON.parse(b.dataset.offer || '[]').forEach((i, n) => { if (v('pfPitch' + n)) p.pitch[i] = v('pfPitch' + n); });
+    } else if (/^D/.test(kind) && out === 'Spoke') {
+      p.rating = parseInt(v('pfRate'), 10) || ''; p.answers = {};
+      [['pfFeat', 'features'], ['pfItems', 'items'], ['pfProb', 'problem'], ['pfProm', 'promised'], ['pfSvc', 'service'], ['pfRc', 'rc'], ['pfHsrp', 'hsrp'], ['pfTag', 'fastag'], ['pfOpen', 'openIssue']].forEach(([id, k]) => { if ($(id)) p.answers[k] = v(id); });
+      if (kind !== 'D30' && !p.rating) return toast('Choose the rating');
+      if (kind === 'D1') { p.attended = v('pfWho') === 'Other' ? v('pfWhoName') : v('pfWho'); if (!p.attended) return toast('Ask who attended the customer'); }
+      p.pitch = {}; JSON.parse(b.dataset.offer || '[]').forEach((i, n) => { if (v('pfPitch' + n)) p.pitch[i] = v('pfPitch' + n); });
+    }
+    if (out === 'Booked') { p.answers = {Date: v('bkDate'), Advisor: v('bkAdv'), Pickup: v('bkPick')}; if (!p.answers.Date || !p.answers.Advisor) return toast('Choose the service date and the advisor'); }
+    if (out === 'Already done') { p.answers = {Where: v('svWhere')}; if (!p.answers.Where) return toast('Where was the service done?'); }
+    if (out === 'Not needed') { p.answers = {Reason: v('svWhy')}; if (!p.answers.Reason) return toast('Choose the reason'); }
+    if (out === 'Renewed with us') { p.answers = {PolicyNo: v('rnPol')}; if (p.answers.PolicyNo.length < 3) return toast('Enter the new policy no.'); }
+    if (out === 'Renewed elsewhere') { p.answers = {Insurer: v('rnIns')}; if (p.answers.Insurer.length < 2) return toast('Enter the insurance company'); }
+    if (out === 'Interested') p.answers = {Note: v('rnNote')};
+    if (out === 'Not interested' && /^R/.test(kind)) p.answers = {Note: v('rnWhy')};
+    return run(async () => { const r = await jsonp('ccCall', p); KIND = ''; await load();
+      toast((out === 'Booked' ? 'Service booked with ' + p.answers.Advisor : (r.flags && r.flags.length ? 'Call saved. ' + r.flags.length + ' point(s) sent to the owner and Sales Manager. ' : 'Call saved. ') + (r.leads && r.leads.length ? r.leads.length + ' lead(s) made' : r.lead ? 'Lead sent to the insurance desk' : '')).trim(), 5000); });
+  }
+  if (act === 'book') { const s = b.dataset.s; if (s === 'Did not come' && !confirm('Mark that the car did not come? The PSF desk will call the customer again.')) return;
+    return run(async () => { await jsonp('ccBook', {bookId: b.dataset.b, status: s, note: v('bn_' + b.dataset.b)}); await load(); toast(s === 'Came' ? 'Marked: came for service' : 'Marked: did not come'); }); }
+  if (act === 'lead') { const id = b.dataset.l, st = v('ld_' + id); if (!st) return toast('Choose the result');
+    if (st === 'Converted' && !(Number(v('la_' + id)) > 0)) return toast('Enter the amount of the sale');
+    return run(async () => { await jsonp('ccLead', {leadId: id, status: st, note: v('ln_' + id), amount: v('la_' + id)}); await load(); toast('Lead updated'); }); }
+  if (act === 'resolve') { const id = b.dataset.c; return run(async () => { await jsonp('ccResolve', {compId: id, text: v('cr_' + id)}); await load(); toast(isSA() ? 'Marked resolved. The PSF desk will call the customer.' : 'Marked resolved'); }); }
+  if (act === 'close') { const id = b.dataset.c, ok = b.dataset.ok === '1'; return run(async () => { const r = await jsonp('ccClose', {compId: id, satisfied: ok ? 1 : 0, note: v('cc_' + id)}); await load(); toast(ok ? 'Complaint closed' : 'Reopened and sent to the owner'); }); }
+  if (act === 'complain') { const cat = v('cpCat'); if (!cat) return toast('Choose the category'); if (v('cpText').length < 5) return toast('Write the complaint');
+    return run(async () => { const r = await jsonp('ccComplaint', {id: c.DealID, category: cat, advisor: v('cpAdv'), urgency: /^Urgent/.test(v('cpUrg')) ? 'Urgent' : 'Normal', text: v('cpText')}); await load(); toast('Complaint logged: ' + r.complaint.Handler); }); }
+};
+
+/* ── Automatic logout, the same in every Planet Toyota app (24 Nov 2026) ──
+   8 am to 8:30 pm: no automatic logout. At 8:30 pm everyone except the Dealer Principal is logged out, and from
+   8:30 pm to 8 am a login lasts only while in use: 15 minutes without a touch logs it out. The portal script checks
+   the same rule, so it holds even when a page is left open. */
+var PT_AUTO = (function () {
+  var NIGHT = 20 * 60 + 30, MORNING = 8 * 60, IDLE = 15 * 60000, last = Date.now();
+  function sess() { try { return JSON.parse(localStorage.getItem('pt_portal') || 'null') || {}; } catch (e) { return {}; } }
+  function exempt(u) { u = u || {}; return /dealer\s*principal|owner/i.test(u.designation || '') || String(u.empId || '').toUpperCase() === 'ADMIN'; }
+  function istMin(ms) { var d = new Date(ms + 5.5 * 3600e3); return d.getUTCHours() * 60 + d.getUTCMinutes(); }
+  function cutoff(at) { var d = new Date(at + 5.5 * 3600e3), day = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()) - 5.5 * 3600e3 + NIGHT * 60000; return istMin(at) < NIGHT ? day : day + 864e5; }
+  function due() {
+    var s = sess(), now = Date.now(), m = istMin(now);
+    if (!s.token || exempt(s.user)) return '';
+    if (s.at && now >= cutoff(s.at)) return 'Logged out at 8:30 pm. Please log in again.';
+    if ((m >= NIGHT || m < MORNING) && now - last > IDLE) return 'Logged out after 15 minutes without use (8:30 pm to 8 am).';
+    return '';
+  }
+  function signOut(msg, portalUrl) {   // ends the portal login on this device, then shows the portal login
+    var s = sess();
+    try { localStorage.removeItem('pt_portal'); if (msg) localStorage.setItem('pt_portal_msg', msg); } catch (e) {}
+    var go = function () { location.href = portalUrl; };
+    if (!s.token || !s.api) return go();
+    var t = setTimeout(go, 4000);
+    fetch(s.api + '?payload=' + encodeURIComponent(JSON.stringify({ action: 'logout', token: s.token })) + '&n=' + Date.now()).catch(function () {}).then(function () { clearTimeout(t); go(); });
+  }
+  ['click', 'keydown', 'touchstart', 'scroll', 'input', 'mousemove'].forEach(function (ev) { document.addEventListener(ev, function () { last = Date.now(); }, { capture: true, passive: true }); });
+  return { due: due, signOut: signOut, touch: function () { last = Date.now(); } };
+})();
+function autoOut(){ const why = PT_AUTO.due(); if (why && U) { U = null; PT_AUTO.signOut(why, PORTAL); } }
+setInterval(autoOut, 20000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) autoOut(); });
+
+/* ---------- start ---------- */
+(async function start(){
+  if (!tok()) { location.replace(PORTAL); return; }
+  try { await load(); $('gate').classList.add('hide'); }
+  catch (e) { if (/expired|log in/i.test(e.message)) { location.replace(PORTAL); return; } gate('Could not open Customer Calls', e.message, true); }
+})();
+</script>
+</body>
+</html>
